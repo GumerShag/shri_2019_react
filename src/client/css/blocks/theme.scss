@@ -1,0 +1,38 @@
+.theme {
+    font-family: YS Text, SANS-SERIF, Arial;
+    --typo-size-s: 14px;
+    --typo-size-m: 16px;
+    --typo-size-l: 24px;
+
+    &_color_default {
+        --color-typo-primary: #000000;
+        --color-typo-secondary: #7f8285;
+        --color-typo-visited: #434445;
+        --color-typo-ghost: #b8bec3;
+        --color-typo-link: #1774e9;
+        --color-typo-second-gray: #7f8285;
+        --color-typo-lilac: #6b69c7;
+        --color-light-gray: #f2f2f2;
+
+        --color-bg-default: #ffffff;
+        --color-bg-ghost: #f5f5f5;
+
+        --color-border-accent: #ff3029;
+        --color-border-ghost: #e5e5e5;
+        --color-border-gray: #cccccc;
+
+        --color-icon-ghost: #ebf6fd;
+
+        --color-code-font-primary: #00234b;
+        --color-code-font-secondary: #005fba;
+
+        --color-typo-positive: #19bc4d;
+        --color-typo-negative: #ff3029;
+
+        --color-bg-light-blue: #f1f8ff;
+        --color-bg-added: #e6ffed;
+        --color-bg-removed: #ffeef0;
+
+        --color-bg-dark-gray: #e6e6e6;
+    }
+}

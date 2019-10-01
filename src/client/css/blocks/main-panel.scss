@@ -1,0 +1,10 @@
+.main-panel {
+    display: grid;
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 32px;
+
+    @media screen and (max-width: 720px) {
+        padding: 0;
+    }
+}
