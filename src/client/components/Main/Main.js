@@ -3,7 +3,6 @@ import {CrumbsBar} from '../CrumbsBar/CrumbsBar'
 import {PanelHeader} from '../PanelHeader/PanelHeader'
 import {PanelNavigationBar} from '../PanelNavigationBar/PanelNavigationBar'
 import {PanelContent} from '../PanelContent/PanelContent'
-import Table from '../Table/table'
 
 
 export const Main = () => {
@@ -12,9 +11,7 @@ export const Main = () => {
             <CrumbsBar/>
             <PanelHeader/>
             <PanelNavigationBar/>
-            <PanelContent>
-                <Table/>
-            </PanelContent>
+            <PanelContent/>
         </main>
     )
 };
