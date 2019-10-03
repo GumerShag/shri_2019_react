@@ -1,21 +1,23 @@
 import React, {Component} from 'react';
 import { connect } from 'react-redux';
 import TableList from '../TableList/TableList'
-import { fetchFiles } from '../../Actions/Actions'
+import { fetchFilesFromRepository } from '../../Actions/Actions'
+import { withRouter } from 'react-router-dom';
 
-const mapStateToProps = (state) => ({
-   files: [...state.files]
+const mapStateToProps = (state, urlProps) => ({
+   files: [...state.files],
+   urlProps
 });
 
 const mapDispatchToProps = dispatch =>
     ({
         onFetchFiles(){
-            dispatch(fetchFiles())
+            dispatch(fetchFilesFromRepository())
         }
     });
 
-const Table = connect(
+const Table = withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(TableList);
+)(TableList));
 export default Table

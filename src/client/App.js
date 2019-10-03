@@ -3,8 +3,9 @@ import React, {Component} from "react";
 import {Header} from './components/Header/Header'
 import {Footer} from './components/Footer/Footer'
 import {Main} from './components/Main/Main'
-import {fetchFiles} from "./Actions/Actions";
-import { connect } from 'react-redux'
+import {fetchFilesFromRepository, fetchFilesFromDirectory, fetchDataFromFile} from "./Actions/Actions";
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class App extends Component {
     constructor(props) {
@@ -12,9 +13,25 @@ class App extends Component {
     }
 
     componentDidMount() {
-        const {dispatch} = this.props;
-        dispatch(fetchFiles())
+        const {dispatch, match} = this.props;
+        if (match.params.repositoryId) {
+            dispatch(fetchFilesFromRepository(match.params));
+        } else {
+            //load root of repositories
+        }
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.match !== prevProps.match) {
+            const {dispatch, match} = this.props;
+            if (match.url.includes('tree')) {
+                dispatch(fetchFilesFromDirectory(match.url));
+            }
+            if (match.url.includes('blob')) {
+                dispatch(fetchDataFromFile(match.url));
+            }
+        }
+    }
+
     render() {
         return (
             <>
@@ -28,4 +45,9 @@ class App extends Component {
     }
 }
 
-export default connect()(App);
+const mapStateToProps = (state, urlProps) => ({
+    state,
+    urlProps
+});
+
+export default withRouter(connect(mapStateToProps)(App));

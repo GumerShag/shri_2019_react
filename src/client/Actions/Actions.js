@@ -1,21 +1,47 @@
 import Types from '../Types/Types'
-const fetchFiles = () => dispatch => {
-    return fetch('http://localhost:3000/api/repos')
+const fetchFilesFromRepository = ({repositoryId}) => dispatch => {
+    //fixme: URL to some global env
+    return fetch(`http://localhost:3000/api/repos/${repositoryId}`)
         .then(response => {
             return response.json();
         })
         .then(files => {
-            const filteredFilesList = files.filter(file => {
-                return file.id.toLowerCase().includes(name.toLowerCase());
-            });
-            dispatch(setFilesAction(filteredFilesList));
+            dispatch(setFilesListToTable(files));
         });
 };
 
-const setFilesAction = files => ({
+const fetchFilesFromDirectory = (path) => dispatch => {
+    //fixme: URL to some global env
+    return fetch(`http://localhost:3000/api/repos${path}`)
+        .then(response => {
+            return response.json();
+        })
+        .then(files => {
+            debugger
+            dispatch(setFilesListToTable(files));
+        });
+};
+
+const fetchDataFromFile = (path) => dispatch => {
+    //fixme: URL to some global env
+    return fetch(`http://localhost:3000/api/repos${path}`)
+        .then(response => {
+            return response;
+        })
+        .then(content => {
+            dispatch(setContentToViewer(data));
+        });
+};
+
+const setFilesListToTable = files => ({
     type: Types.SET_FILES,
-    files: files
+    files
 });
 
-export  { fetchFiles }
+const setContentToViewer = content => ({
+    type: Types.SET_FILES,
+    content
+});
+
+export  { fetchFilesFromRepository, fetchFilesFromDirectory, fetchDataFromFile }
 
