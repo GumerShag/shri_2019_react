@@ -1,14 +1,25 @@
 import React, {Component} from 'react';
-import {createStore, applyMiddleware} from 'redux'
-import thunk from 'redux-thunk';
-import reducer from "../../Reducers/FilesReducer";
 import Table from "../Table/Table";
+import ContentViewerContainer from "../ContentViewerContainer/ContentViewerContainer";
+import {connect} from "react-redux";
 
 
-export const PanelContent = () => {
+class PanelContent extends Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
         return (
             <div className="panel-content">
-                <Table/>
+                {this.props.currentView === 'table' ? <Table/> : <ContentViewerContainer/>}
             </div>
         )
-}
+    }
+};
+
+const mapStateToProps = (state) => ({
+    currentView: state.currentView
+});
+
+export default connect(mapStateToProps)(PanelContent);

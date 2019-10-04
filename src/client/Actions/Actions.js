@@ -1,36 +1,31 @@
 import Types from '../Types/Types'
+import RepoAPI from '../api/RepoAPI';
+
 const fetchFilesFromRepository = ({repositoryId}) => dispatch => {
-    //fixme: URL to some global env
-    return fetch(`http://localhost:3000/api/repos/${repositoryId}`)
-        .then(response => {
-            return response.json();
-        })
-        .then(files => {
-            dispatch(setFilesListToTable(files));
-        });
+    return RepoAPI.getFilesFromRepository(repositoryId).then(files => {
+        dispatch(setFilesListToTable(files));
+    }).catch(error => {
+        //dispatch some unsuccessful action
+        throw(error);
+    });
 };
 
 const fetchFilesFromDirectory = (path) => dispatch => {
-    //fixme: URL to some global env
-    return fetch(`http://localhost:3000/api/repos${path}`)
-        .then(response => {
-            return response.json();
-        })
-        .then(files => {
-            debugger
-            dispatch(setFilesListToTable(files));
-        });
+    return RepoAPI.getFilesFromDirectory(path).then(files => {
+        dispatch(setFilesListToTable(files));
+    }).catch(error => {
+        //dispatch some unsuccessful action
+        throw(error);
+    });
 };
 
 const fetchDataFromFile = (path) => dispatch => {
-    //fixme: URL to some global env
-    return fetch(`http://localhost:3000/api/repos${path}`)
-        .then(response => {
-            return response;
-        })
-        .then(content => {
-            dispatch(setContentToViewer(data));
-        });
+    return RepoAPI.getDataFromFile(path).then(content =>
+            dispatch(setContentToViewer(JSON.parse(content)))
+    ).catch(error => {
+        //dispatch some unsuccessful action
+        throw(error);
+    });
 };
 
 const setFilesListToTable = files => ({
@@ -39,7 +34,7 @@ const setFilesListToTable = files => ({
 });
 
 const setContentToViewer = content => ({
-    type: Types.SET_FILES,
+    type: Types.SET_CONTENT,
     content
 });
 

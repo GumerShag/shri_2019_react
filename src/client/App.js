@@ -3,9 +3,9 @@ import React, {Component} from "react";
 import {Header} from './components/Header/Header'
 import {Footer} from './components/Footer/Footer'
 import {Main} from './components/Main/Main'
-import {fetchFilesFromRepository, fetchFilesFromDirectory, fetchDataFromFile} from "./Actions/Actions";
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
+import {fetchDataFromFile, fetchFilesFromDirectory, fetchFilesFromRepository} from "./Actions/Actions";
+import {connect} from 'react-redux';
+import {withRouter} from 'react-router-dom';
 
 class App extends Component {
     constructor(props) {
@@ -14,10 +14,17 @@ class App extends Component {
 
     componentDidMount() {
         const {dispatch, match} = this.props;
+        debugger
+        if (match.url.includes('tree')) {
+            dispatch(fetchFilesFromDirectory(match.url));
+            return;
+        }
+        if (match.url.includes('blob')) {
+            dispatch(fetchDataFromFile(match.url));
+            return;
+        }
         if (match.params.repositoryId) {
             dispatch(fetchFilesFromRepository(match.params));
-        } else {
-            //load root of repositories
         }
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -25,9 +32,14 @@ class App extends Component {
             const {dispatch, match} = this.props;
             if (match.url.includes('tree')) {
                 dispatch(fetchFilesFromDirectory(match.url));
+                return;
             }
             if (match.url.includes('blob')) {
                 dispatch(fetchDataFromFile(match.url));
+                return;
+            }
+            if (match.params.repositoryId) {
+                dispatch(fetchFilesFromRepository(match.params));
             }
         }
     }

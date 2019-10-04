@@ -168,7 +168,7 @@ app.get('/api/repos/:repositoryId/blob/:commitHash*', (req, res) => {
                         res.status(500).json({error: err});
                         return;
                     }
-                    res.send(content);
+                    res.send(content.split('\n'));
                 }
             );
         }

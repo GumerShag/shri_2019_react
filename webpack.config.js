@@ -9,6 +9,18 @@ module.exports = [{
         filename: "index_bundle.js"
     },
     name: 'ui',
+    devServer: {
+        contentBase: path.join(__dirname, '/build'),
+        port: 8080,
+        historyApiFallback: {
+            rewrites: [
+                { from: /\/style.css/, to: '/style.css'},
+                { from: /\/index_bundle.js/, to: '/index_bundle.js'},
+                { from: /\/blob\/master/, to: '/index.html'},
+                { from: /\/tree\/master/, to: '/index.html'}
+            ]
+        }
+    },
     module: {
         rules: [
             {
