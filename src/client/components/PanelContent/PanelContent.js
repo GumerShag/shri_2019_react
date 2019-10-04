@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Table from "../Table/Table";
+import TableContainer from "../TableContainer/TableContainer";
 import ContentViewerContainer from "../ContentViewerContainer/ContentViewerContainer";
 import {connect} from "react-redux";
 
@@ -12,7 +12,7 @@ class PanelContent extends Component {
     render() {
         return (
             <div className="panel-content">
-                {this.props.currentView === 'table' ? <Table/> : <ContentViewerContainer/>}
+                {this.props.currentView === 'table' ? <TableContainer/> : <ContentViewerContainer/>}
             </div>
         )
     }

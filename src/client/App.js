@@ -14,7 +14,6 @@ class App extends Component {
 
     componentDidMount() {
         const {dispatch, match} = this.props;
-        debugger
         if (match.url.includes('tree')) {
             dispatch(fetchFilesFromDirectory(match.url));
             return;

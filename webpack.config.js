@@ -14,10 +14,15 @@ module.exports = [{
         port: 8080,
         historyApiFallback: {
             rewrites: [
-                { from: /\/style.css/, to: '/style.css'},
-                { from: /\/index_bundle.js/, to: '/index_bundle.js'},
-                { from: /\/blob\/master/, to: '/index.html'},
-                { from: /\/tree\/master/, to: '/index.html'}
+                {from: /\/style.css/, to: '/style.css'},
+                {from: /\/index_bundle.js/, to: '/index_bundle.js'},
+                {from: /\/blob\/master/, to: '/index.html'},
+                {from: /\/tree\/master/, to: '/index.html'},
+                {
+                    from: /assets\/\D+.svg/, to: function (context) {
+                        return '/src/client/css/' + context.match[0];
+                    }
+                }
             ]
         }
     },

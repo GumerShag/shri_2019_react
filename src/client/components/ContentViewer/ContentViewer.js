@@ -1,16 +1,16 @@
 import React from 'react';
-import {withNaming} from '@bem-react/classname';
+import {getClassName} from '../../helpers/ClassNaming'
+import uuid from 'uuid';
 import './ContentViewer.scss'
 
-const cn = withNaming({ n: '', e: '__', m: '_', v: '_' });
-const cnContentViewer = cn('content-viewer');
+const cnContentViewer = getClassName('content-viewer');
 
 const ContentViewer = ({content, urlProps}) => {
     return (
         <div className={cnContentViewer()}>
             <div className={cnContentViewer('header')}>
                 <div className="icon-plus">
-                    <div className="icon-plus icon-plus__icon icon icon__paper icon_size-m"></div>
+                    <div className="icon-plus icon-plus__icon icon icon__paper icon_size-m"/>
                     <div className="icon-plus icon-plus__block icon-plus_vertical-align_center">
                         <span className="text text_size-s text_bold">ya.make</span>
                         <span className="text text_size-s text_bold text_color-ghost">(4 347 bytes)</span>
@@ -26,7 +26,7 @@ const ContentViewer = ({content, urlProps}) => {
             </div>
             <div className={cnContentViewer('body')}>
                 {content.map((line, index) => (
-                    <div className={cnContentViewer('row', {line: true})}>
+                    <div key={uuid.v1()} className={cnContentViewer('row', {line: true})}>
                         <div  className={cnContentViewer('row-number')}>{index}</div>
                         <div  className={cnContentViewer('row-content') + ' text text_color-primary'}>{line}</div>
                     </div>

@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import {connect} from 'react-redux';
 import TableList from '../TableList/TableList'
-import { fetchFilesFromRepository } from '../../Actions/Actions'
-import { withRouter } from 'react-router-dom';
+import {fetchFilesFromRepository} from '../../Actions/Actions'
+import {withRouter} from 'react-router-dom';
 
 const mapStateToProps = (state, urlProps) => ({
    files: [...state.files],
@@ -16,8 +16,8 @@ const mapDispatchToProps = dispatch =>
         }
     });
 
-const Table = withRouter(connect(
+const TableContainer = withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
 )(TableList));
-export default Table
+export default TableContainer
