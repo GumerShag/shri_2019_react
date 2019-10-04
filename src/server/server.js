@@ -135,11 +135,14 @@ app.get('/api/repos/:repositoryId/tree/:commitHash*', (req, res) => {
             //fixme: dirty hack to format output
             const contentList = content.split('\n\n')[1].split('\n');
             console.log(contentList)
-            res.json(contentList.filter(id => id).map(id => ({
-                    id,
-                    path: `/${id}`,
-                    isDirectory: !id.match(/\.[\w]/g)
-                })
+            res.json(contentList.filter(id => id).map(id => {
+                id = id.lastIndexOf('/') > -1 ? id.slice(0, id.lastIndexOf('/')) : id;
+                    return {
+                        id,
+                        path: `/${id}`,
+                        isDirectory: !id.match(/\.[\w]/g)
+                    }
+                }
                 )
             );
         }

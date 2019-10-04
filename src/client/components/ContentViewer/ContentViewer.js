@@ -1,18 +1,21 @@
 import React from 'react';
 import {getClassName} from '../../helpers/ClassNaming'
 import uuid from 'uuid';
-import './ContentViewer.scss'
+import './ContentViewer.scss';
+import path from 'path';
 
 const cnContentViewer = getClassName('content-viewer');
 
 const ContentViewer = ({content, urlProps}) => {
+    //fixme: get filename from server response
+    const fileName = path.basename(urlProps.location.pathname);
     return (
         <div className={cnContentViewer()}>
             <div className={cnContentViewer('header')}>
                 <div className="icon-plus">
                     <div className="icon-plus icon-plus__icon icon icon__paper icon_size-m"/>
                     <div className="icon-plus icon-plus__block icon-plus_vertical-align_center">
-                        <span className="text text_size-s text_bold">ya.make</span>
+                        <span className="text text_size-s text_bold">{fileName}</span>
                         <span className="text text_size-s text_bold text_color-ghost">(4 347 bytes)</span>
                     </div>
                 </div>
