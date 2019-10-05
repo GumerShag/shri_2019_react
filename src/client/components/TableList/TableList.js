@@ -10,8 +10,12 @@ const TableList = ({files, urlProps}) => {
     const columns = ['Name', 'Last commit', 'Commit message', 'Committer', 'Updated'];
     return (
         <table className={cnTableList({col: 5})}>
-            <TableHead columns={columns}/>
-            <TableListItems files={files} currentUrl={urlProps.location.pathname}/>
+            <thead className={cnTableList('head')}>
+                <TableHead columns={columns}/>
+            </thead>
+            <tbody className={cnTableList('body')}>
+                 <TableListItems files={files} currentUrl={urlProps.location.pathname}/>
+            </tbody>
         </table>
     )
 };

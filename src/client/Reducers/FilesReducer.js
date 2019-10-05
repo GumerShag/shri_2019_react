@@ -8,6 +8,8 @@ const reducer = (state = {loading: false, data: []}, action) => {
             return {...state, files: action.files, currentView: 'table'};
         case Types.SET_CONTENT:
             return {...state, content: action.content, currentView: 'fileDetails'};
+        case Types.UPDATE_ROUTES:
+            return {...state, routes: action.routes};
         default:
             return state
     }

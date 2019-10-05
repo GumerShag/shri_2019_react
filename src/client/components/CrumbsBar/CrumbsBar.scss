@@ -16,21 +16,23 @@
 
     &__link {
         margin-right: 8px;
-        text-decoration: none;
         cursor: pointer;
-        font-weight: bold;
-        color: var(--color-typo-ghost);
-        position: relative;
-        font-size: var(--typo-size-s);
 
-        &:after {
-            content: '/';
-            position: absolute;
-            right: -10px;
-            top: 0;
+
+
+        &_previous {
+            font-weight: bold;
             color: var(--color-typo-ghost);
-        }
+            margin-right: 16px;
+            position: relative;
 
+            &:after {
+                content: '/';
+                position: absolute;
+                right: -14px;
+                color: var(--color-typo-ghost);
+            }
+        }
     }
     @media screen and (max-width: 720px) {
         padding: 12px 16px;

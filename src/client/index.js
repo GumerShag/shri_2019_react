@@ -8,7 +8,7 @@ import {applyMiddleware, createStore} from "redux";
 import reducer from "./Reducers/FilesReducer";
 import thunk from "redux-thunk";
 
-const preloadedState = {files: [], content: [], currentView: 'table'};
+const preloadedState = {files: [], content: [], currentView: 'table', routes: []};
 
 const store = createStore(reducer, preloadedState, applyMiddleware(thunk));
 

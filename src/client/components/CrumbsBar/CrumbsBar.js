@@ -1,11 +1,33 @@
-import React from 'react';
+import React, {Component} from 'react';
+import uuid from 'uuid';
+import {connect} from "react-redux";
+import {Link} from "react-router-dom";
+import './CrumbsBar.scss'
+import {getClassName} from "../../helpers/ClassNaming";
 
-export const CrumbsBar = function () {
-    return (
-        <div className="crumbs-bar">
-            <div className="crumbs-bar__content">
-                <span className="link link_color-black link_weight-bold">arcadia</span>
+const cnCrumbsBar = getClassName('crumbs-bar');
+
+class CrumbsBar extends Component {
+    render() {
+        debugger
+        return (
+            <div className={cnCrumbsBar()}>
+                <div className={cnCrumbsBar('content')}>
+                    {this.props.routes.map(route => (
+                        <Link key={uuid.v1()}  className={cnCrumbsBar('link')} to={route.path}>{route.name}</Link>
+                    ))}
+
+                </div>
             </div>
-        </div>
-    )
-};
+        )
+    }
+}
+
+const mapStateToProps = (state, urlProps) => ({
+    routes: [...state.routes]
+});
+
+export default connect(mapStateToProps)(CrumbsBar);
+
+
+

@@ -38,5 +38,10 @@ const setContentToViewer = content => ({
     content
 });
 
-export  { fetchFilesFromRepository, fetchFilesFromDirectory, fetchDataFromFile }
+const updateRoutes = routes => ({
+   type: Types.UPDATE_ROUTES,
+   routes
+});
+
+export  { fetchFilesFromRepository, fetchFilesFromDirectory, fetchDataFromFile, updateRoutes }
 

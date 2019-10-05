@@ -1,0 +1,45 @@
+.table-head {
+    display: contents;
+    transform: rotate(360deg);
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    @media screen and (max-width: 720px) {
+      &:after {
+        content: '';
+        background: url('../../assets/arrow-right-icon.svg') no-repeat;
+        width: 14px;
+        height: 16px;
+        position: absolute;
+        top: 44%;
+        right: 0;
+        cursor: pointer;
+      }
+    }
+
+    &__cell-header {
+      padding: 16px 8px 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      text-align: left;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--color-border-ghost);
+
+      @media screen and (max-width: 720px) {
+        border-bottom: none;
+      }
+    }
+
+    & > :last-child {
+      text-align: right;
+    }
+
+    @media screen and (max-width: 720px) {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr;
+      grid-template-columns: repeat(5, 1fr);
+      border-bottom: 1px solid var(--color-border-ghost);
+    }
+}
