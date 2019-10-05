@@ -9,40 +9,21 @@ const app = express();
 const repoPath = args.p;
 const absoluteReposPath = path.resolve(__dirname, repoPath);
 const cors = require('cors');
+const {getRepositories} = require('./controllers/getRepositories');
+const {getCommits} = require('./controllers/getCommits');
+const { getFilesInDirectory} = require('./controllers/getFilesInDirectory');
+const { getFileContent} = require('./controllers/getFileContent');
 
 app.use(cors());
-app.get('/api/repos/', (req, res) => {
+app.get('/api/repos/', async (req, res) => {
     let {start, limit} = req.query;
     start = start ? parseInt(start) : undefined;
     limit = limit ? parseInt(limit) : undefined;
 
-    if (!fs.existsSync(absoluteReposPath)) {
-        res.status(404).json({error: 'Wrong path to repositories folder.'});
-        return;
-    }
-
-    fs.readdir(absoluteReposPath, (err, repos) => {
-        if (err) {
-            res.status(500).json({error: err});
-            return;
-        }
-
-        //Adding simple pagination
-        if (typeof start !== 'undefined' && typeof limit !== 'undefined') {
-            let reposPerPage = [];
-            for (let i = start; i < limit + start; i++) {
-                if (repos[i] && i < repos.length) {
-                    reposPerPage.push({id: repos[i]});
-                }
-            }
-            return res.json(reposPerPage);
-        } else {
-            //Add some timeout to get it more realistic
-            setTimeout(function () {
-                res.json(repos.map(id => ({id})));
-            }, 500)
-
-        }
+    getRepositories(absoluteReposPath, start, limit).then(repos => {
+        res.json(repos);
+    }).catch(error => {
+        res.status(500).json({error})
     });
 });
 
@@ -63,44 +44,15 @@ app.get('/api/repo/search', (req, res) => {
     );
 });
 
-app.get('/api/repos/:repositoryId/commits/:commitHash', (req, res) => {
+app.get('/api/repos/:repositoryId/commits/:commitHash', async (req, res) => {
     const {repositoryId} = req.params;
     const {commitHash} = req.params;
 
-    exec(
-        `git rev-parse ${commitHash}`,
-        {cwd: `${absoluteReposPath}/${repositoryId}`},
-        (err, stdout) => {
-            if (err) {
-                if (err.message.indexOf('unknown revision') > -1) {
-                    res.status(404).json({
-                        error: `404. ${commitHash}: no such commit or branch`
-                    });
-                    return;
-                }
-                return;
-            }
-            const branchHash = stdout.trim();
-            exec(
-                'git --no-pager log ' +
-                branchHash +
-                ' --pretty=format:"{@commitHash@: @"%H"@,@message@: @"%s"@,@date@: @"%cd"@}"',
-                {cwd: `${absoluteReposPath}/${repositoryId}`},
-                (err, logData) => {
-                    if (err) {
-                        console.error(`exec error: ${err}`);
-                        return;
-                    }
-                    let commitsArray = logData.replace(/@/g, '"').split('\n');
-                    res.json(
-                        commitsArray.map(commit => {
-                            return JSON.parse(`${commit}`);
-                        })
-                    );
-                }
-            );
-        }
-    );
+    getCommits(commitHash, `${absoluteReposPath}/${repositoryId}`).then(commits => {
+        res.json(commits);
+    }).catch(error => {
+        res.status(500).json({error})
+    });
 });
 
 app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
@@ -120,62 +72,28 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
     );
 });
 
-app.get('/api/repos/:repositoryId/tree/:commitHash*', (req, res) => {
+app.get('/api/repos/:repositoryId/tree/:commitHash*', async (req, res) => {
     const {repositoryId} = req.params;
     const {commitHash} = req.params;
     let path = req.params[0];
-    exec(
-        `git show ${commitHash}:${'.'.concat(path)}`,
-        {cwd: `${absoluteReposPath}/${repositoryId}`},
-        (err, content) => {
-            if (err) {
-                res.status(500).json({error: err});
-                return;
-            }
-            //fixme: dirty hack to format output
-            const contentList = content.split('\n\n')[1].split('\n');
-            console.log(contentList)
-            res.json(contentList.filter(id => id).map(id => {
-                id = id.lastIndexOf('/') > -1 ? id.slice(0, id.lastIndexOf('/')) : id;
-                    return {
-                        id,
-                        path: `/${id}`,
-                        isDirectory: !id.match(/\.[\w]/g)
-                    }
-                }
-                )
-            );
-        }
-    );
+
+    getFilesInDirectory(commitHash, `${absoluteReposPath}/${repositoryId}`, path).then(filesList => {
+        res.json(filesList);
+    }).catch(error => {
+        res.status(500).json({error})
+    });
 });
 
-app.get('/api/repos/:repositoryId/blob/:commitHash*', (req, res) => {
+app.get('/api/repos/:repositoryId/blob/:commitHash*', async (req, res) => {
     const {repositoryId} = req.params;
     const {commitHash} = req.params;
     const pathToFile = req.params[0];
 
-    exec(
-        `git rev-parse ${commitHash}`,
-        {cwd: `${absoluteReposPath}/${repositoryId}`},
-        (err, commitHash) => {
-            if (err) {
-                res.status(500).json({error: err});
-                return;
-            }
-            const branchHash = commitHash.trim();
-            exec(
-                `git show ${branchHash}:${'.'.concat(pathToFile)}`,
-                {cwd: `${absoluteReposPath}/${repositoryId}`},
-                (err, content) => {
-                    if (err) {
-                        res.status(500).json({error: err});
-                        return;
-                    }
-                    res.send(content.split('\n'));
-                }
-            );
-        }
-    );
+    getFileContent(commitHash, `${absoluteReposPath}/${repositoryId}`, pathToFile).then(fileContent => {
+        res.json(fileContent);
+    }).catch(error => {
+        res.status(500).json({error})
+    });
 });
 
 app.route('/api/repos/:repositoryId')
@@ -244,4 +162,5 @@ app.route('/api/repos/:repositoryId')
     });
 
 app.listen(3000);
+
 console.log("Server started on http://localhost:3000");
