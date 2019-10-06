@@ -1,12 +1,28 @@
 const assert = require('assert');
 const path = require('path');
+const fs = require('fs-extra');
+const AdmZip = require('adm-zip');
 const BASE_PATH = path.resolve(__dirname, `stub_repositories`);
 
-const { getRepositories } = require('../src/server/controllers/getRepositories');
+const {
+    getRepositories
+} = require('../src/server/controllers/getRepositories');
 const { getCommits } = require('../src/server/controllers/getCommits');
-const { getFilesInDirectory } = require('../src/server/controllers/getFilesInDirectory');
+const {
+    getFilesInDirectory
+} = require('../src/server/controllers/getFilesInDirectory');
 const { getFileContent } = require('../src/server/controllers/getFileContent');
 
+before(() => {
+    console.log('Unzipping');
+    const zip = new AdmZip('test/stub_repositories.zip');
+    zip.extractAllTo('test', true);
+});
+after(() => {
+    fs.remove('test/stub_repositories', err => {
+        console.log('Removing stub repository');
+    });
+});
 describe('Список репозиториев', async () => {
     it('Можем получить список всех репозиториев', done => {
         getRepositories(BASE_PATH)
@@ -52,6 +68,11 @@ describe('Список коммитов', async () => {
         getCommits('master', `${BASE_PATH}/repo_1`)
             .then(commits => {
                 assert.deepStrictEqual(commits, [
+                    {
+                        commitHash: 'c1db5b1da22a2ad1636eac51e3fe4541ddfb9e11',
+                        date: 'Sun Oct 6 02:35:21 2019 +0300',
+                        message: 'Add crumbs bar'
+                    },
                     {
                         commitHash: '536cbaad5893050c04ec2e0225e92b551fc7bbc5',
                         date: 'Sun Oct 6 02:29:08 2019 +0300',
