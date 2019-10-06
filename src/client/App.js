@@ -3,7 +3,7 @@ import React, {Component} from "react";
 import {Header} from './components/Header/Header'
 import {Footer} from './components/Footer/Footer'
 import {Main} from './components/Main/Main'
-import {fetchDataFromFile, fetchFilesFromDirectory, fetchFilesFromRepository, updateRoutes} from "./Actions/Actions";
+import {fetchDataFromFile, fetchFilesFromDirectory, fetchFilesFromRepository, updateRoutes} from "./actions/Actions";
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
 

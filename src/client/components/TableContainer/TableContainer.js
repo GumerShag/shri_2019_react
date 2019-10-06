@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import TableList from '../TableList/TableList'
-import {fetchFilesFromRepository} from '../../Actions/Actions'
+import {fetchFilesFromRepository} from '../../actions/Actions'
 import {withRouter} from 'react-router-dom';
 
 const mapStateToProps = (state, urlProps) => ({

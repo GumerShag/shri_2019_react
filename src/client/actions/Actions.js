@@ -1,4 +1,4 @@
-import Types from '../Types/Types'
+import Types from '../types/Types'
 import RepoAPI from '../api/RepoAPI';
 
 const fetchFilesFromRepository = ({repositoryId}) => dispatch => {

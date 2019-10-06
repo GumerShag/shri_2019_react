@@ -5,8 +5,9 @@ import {Provider} from 'react-redux';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {applyMiddleware, createStore} from "redux";
-import reducer from "./Reducers/FilesReducer";
+import reducer from "./reducers/reducers";
 import thunk from "redux-thunk";
+import NotFound from "./components/NotFound/NotFound";
 
 const preloadedState = {files: [], content: [], currentView: 'table', routes: []};
 
@@ -16,6 +17,9 @@ ReactDOM.render(
     <Provider store={store}>
         <Router>
             <Switch>
+                <Route path="/404">
+                    <NotFound/>
+                </Route>
                 <Route path="/:repositoryId/tree/master*">
                     <App/>
                 </Route>
