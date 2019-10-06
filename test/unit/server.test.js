@@ -6,20 +6,20 @@ const BASE_PATH = path.resolve(__dirname, `stub_repositories`);
 
 const {
     getRepositories
-} = require('../src/server/controllers/getRepositories');
-const { getCommits } = require('../src/server/controllers/getCommits');
+} = require('../../src/server/controllers/getRepositories');
+const { getCommits } = require('../../src/server/controllers/getCommits');
 const {
     getFilesInDirectory
-} = require('../src/server/controllers/getFilesInDirectory');
-const { getFileContent } = require('../src/server/controllers/getFileContent');
+} = require('../../src/server/controllers/getFilesInDirectory');
+const { getFileContent } = require('../../src/server/controllers/getFileContent');
 
 before(() => {
     console.log('Unzipping');
-    const zip = new AdmZip('test/stub_repositories.zip');
-    zip.extractAllTo('test', true);
+    const zip = new AdmZip('test/unit/stub_repositories.zip');
+    zip.extractAllTo('test/unit', true);
 });
 after(() => {
-    fs.remove('test/stub_repositories', err => {
+    fs.remove('test/unit/stub_repositories', err => {
         console.log('Removing stub repository');
     });
 });
