@@ -9,7 +9,6 @@ const cnCrumbsBar = getClassName('crumbs-bar');
 
 class CrumbsBar extends Component {
     render() {
-        debugger
         return (
             <div className={cnCrumbsBar()}>
                 <div className={cnCrumbsBar('content')}>
