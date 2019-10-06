@@ -6,7 +6,9 @@
   "scripts": {
     "start:server": "node ./src/server/server.js",
     "start:ui": "webpack-dev-server --mode development --open --hot --config-name=ui",
+    "start:env": "node test/integration/start-env.js",
     "test": "mocha test/unit/*.test.js --timeout 5000",
+    "test:i": "hermione test/integration/integration.test.js",
     "fix:css": "prettier --config ./.prettier.config.js --write ./src/client/css/blocks/*.scss",
     "fix:js": "prettier --config ./.prettier.config.js --write ./src/client/**/*.js",
     "fix:test": "prettier --config ./.prettier.config.js --write test/unit/server.test.js"

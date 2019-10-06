@@ -15,7 +15,7 @@ const { getFileContent } = require('../../src/server/controllers/getFileContent'
 
 before(() => {
     console.log('Unzipping');
-    const zip = new AdmZip('test/unit/stub_repositories.zip');
+    const zip = new AdmZip('test/stub_repositories.zip');
     zip.extractAllTo('test/unit', true);
 });
 after(() => {
