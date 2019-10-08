@@ -1,12 +1,12 @@
-const fs = require('fs');
+import * as fs from 'fs';
 
-const getRepositories = async (absoluteReposPath) => {
-    return new Promise((resolve, reject) => {
+const getRepositories = async (absoluteReposPath: string, start: number, limit: number) => {
+    return new Promise((resolve: (content: Array<object>) => void, reject: (error: object) => void)=> {
         if (!fs.existsSync(absoluteReposPath)) {
-            resolve('Wrong path to repositories folder.');
+            resolve([{error: 'Wrong path to repositories folder.'}]);
             return;
         }
-        fs.readdir(absoluteReposPath, (err, repositories) => {
+        fs.readdir(absoluteReposPath, (err: NodeJS.ErrnoException | null, repositories: Array<string>) => {
             if (err) {
                 reject(err);
                 return;
@@ -29,4 +29,4 @@ const getRepositories = async (absoluteReposPath) => {
         });
     })
 };
-module.exports = {getRepositories};
+export {getRepositories};

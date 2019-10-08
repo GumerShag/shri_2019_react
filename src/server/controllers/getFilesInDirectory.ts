@@ -26,4 +26,4 @@ const getFilesInDirectory = (commitHash: string, repositoryPath: string, filePat
         );
     })
 };
-module.exports = {getFilesInDirectory};
+export {getFilesInDirectory};

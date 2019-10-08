@@ -4,17 +4,17 @@
   "description": "API and UI for Repositories",
   "main": "index.js",
   "scripts": {
-    "start:server": "node ./src/server/server.js",
+    "start:server": "node src/server/server.ts",
     "start:ui": "webpack-dev-server --mode development --open --hot --config-name=ui",
     "start:env": "node test/integration/start-env.js",
-    "test": "mocha test/unit/*.test.js --timeout 5000",
+    "test": "mocha -r ts-node/register test/unit/*.test.js --timeout 5000",
     "test:i": "hermione test/integration/integration.test.js",
     "fix:css": "prettier --config ./.prettier.config.js --write ./src/client/css/blocks/*.scss",
     "fix:js": "prettier --config ./.prettier.config.js --write ./src/client/**/*.js",
     "fix:test": "prettier --config ./.prettier.config.js --write test/unit/server.test.js",
     "start": "npm run build:live",
     "build": "tsc -p .",
-    "build:live": "nodemon --watch 'src/**/*.ts' --exec ts-node src/server/server.js -p D:\\Программирование\\"
+    "build:live": "nodemon --watch 'src/**/*.ts' --exec ts-node src/server/server.ts -p D:\\\\Программирование\\\\"
   },
   "repository": {
     "type": "git",
@@ -67,7 +67,9 @@
     "webpack-merge": "4.1.1"
   },
   "devDependencies": {
+    "@types/express": "^4.17.1",
     "hermione": "^2.12.6",
+    "nodemon": "^1.19.3",
     "svg-inline-loader": "^0.8.0",
     "ts-node": "^8.4.1",
     "typescript": "^3.6.3"

@@ -38,7 +38,7 @@ async function startSelenium(workDirectoryPath) {
 async function startApiServer(repositoriesFolderPath, workDirectoryPath) {
     console.log('Starting API server');
     return new Promise((resolve, reject) => {
-        const logs = spawn(`node`, ['server.js', '-p', repositoriesFolderPath], {cwd: workDirectoryPath});
+        const logs = spawn(`node`, ['server.ts', '-p', repositoriesFolderPath], {cwd: workDirectoryPath});
 
         logs.stdout.on('data', (data) => {
             console.log(`${data}`);

@@ -17,4 +17,4 @@ const getFileContent = (commitHash: string, repositoryPath: string, filePath: st
         );
     })
 };
-module.exports = {getFileContent};
+export {getFileContent};

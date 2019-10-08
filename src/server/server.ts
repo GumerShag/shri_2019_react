@@ -13,30 +13,32 @@ const {getRepositories} = require('./controllers/getRepositories');
 const {getCommits} = require('./controllers/getCommits');
 const { getFilesInDirectory} = require('./controllers/getFilesInDirectory');
 const { getFileContent} = require('./controllers/getFileContent');
+import {Request, Response} from "express";
+import {ExecException} from 'child_process'
 
 app.use(cors());
-app.get('/api/repos/', async (req, res) => {
+app.get('/api/repos/', async (req: Request, res: Response) => {
     let {start, limit} = req.query;
     start = start ? parseInt(start) : undefined;
     limit = limit ? parseInt(limit) : undefined;
 
-    getRepositories(absoluteReposPath, start, limit).then(repos => {
+    getRepositories(absoluteReposPath, start, limit).then((repos: Array<object>) => {
         res.json(repos);
-    }).catch(error => {
-        res.status(500).json({error})
+    }).catch((error: object) => {
+        res.status(500).json(error)
     });
 });
 
-app.get('/api/repo/search', (req, res) => {
+app.get('/api/repo/search', (req: Request, res: Response) => {
     exec(
         `git ls-tree -r master --name-only`,
         {cwd: `${absoluteReposPath}`},
-        (err, content) => {
+        (err: ExecException, content: string) => {
             if (err) {
                 res.status(500).json({error: err});
                 return;
             }
-            const contentList = content.split('\n');
+            const contentList: Array<string> = content.split('\n');
             res.json(contentList.filter(name => name).map(name => {
                 return {id: path.basename(name)}
             }));
@@ -44,27 +46,27 @@ app.get('/api/repo/search', (req, res) => {
     );
 });
 
-app.get('/api/repos/:repositoryId/commits/:commitHash', async (req, res) => {
+app.get('/api/repos/:repositoryId/commits/:commitHash', async (req: Request, res: Response) => {
     const {repositoryId} = req.params;
     const {commitHash} = req.params;
 
-    getCommits(commitHash, `${absoluteReposPath}/${repositoryId}`).then(commits => {
+    getCommits(commitHash, `${absoluteReposPath}/${repositoryId}`).then((commits: Array<string>) => {
         res.json(commits);
-    }).catch(error => {
-        res.status(500).json({error})
+    }).catch((error: object) => {
+        res.status(500).json(error)
     });
 });
 
-app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
+app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req: Request, res: Response) => {
     const {repositoryId} = req.params;
     const {commitHash} = req.params;
 
     exec(
         `git diff ${commitHash}~ ${commitHash}`,
         {cwd: `${absoluteReposPath}/${repositoryId}`},
-        (err, diff) => {
-            if (err) {
-                res.status(500).json({error: err});
+        (error: object, diff: Buffer) => {
+            if (error) {
+                res.status(500).json(error);
                 return;
             }
             res.json({diff});
@@ -72,43 +74,43 @@ app.get('/api/repos/:repositoryId/commits/:commitHash/diff', (req, res) => {
     );
 });
 
-app.get('/api/repos/:repositoryId/tree/:commitHash*', async (req, res) => {
+app.get('/api/repos/:repositoryId/tree/:commitHash*', async (req: Request, res: Response) => {
     const {repositoryId} = req.params;
     const {commitHash} = req.params;
     let path = req.params[0];
 
-    getFilesInDirectory(commitHash, `${absoluteReposPath}/${repositoryId}`, path).then(filesList => {
+    getFilesInDirectory(commitHash, `${absoluteReposPath}/${repositoryId}`, path).then((filesList: Array<string>) => {
         res.json(filesList);
-    }).catch(error => {
+    }).catch((error: ExecException) => {
         res.status(500).json({error})
     });
 });
 
-app.get('/api/repos/:repositoryId/blob/:commitHash*', async (req, res) => {
+app.get('/api/repos/:repositoryId/blob/:commitHash*', async (req: Request, res: Response) => {
     const {repositoryId} = req.params;
     const {commitHash} = req.params;
     const pathToFile = req.params[0];
 
-    getFileContent(commitHash, `${absoluteReposPath}/${repositoryId}`, pathToFile).then(fileContent => {
+    getFileContent(commitHash, `${absoluteReposPath}/${repositoryId}`, pathToFile).then((fileContent: Array<string>) => {
         res.json(fileContent);
-    }).catch(error => {
+    }).catch((error: ExecException) => {
         res.status(500).json({error})
     });
 });
 
 app.route('/api/repos/:repositoryId')
-    .get((req, res) => {
+    .get((req: Request, res: Response) => {
         const {repositoryId} = req.params;
 
         exec(
             `git ls-tree HEAD --name-only`,
             {cwd: `${absoluteReposPath}/${repositoryId}`},
-            (err, content) => {
+            (err: ExecException, content: string) => {
                 if (err) {
                     res.status(500).json({error: err});
                     return;
                 }
-                const contentList = content.split('\n');
+                const contentList: Array<string> = content.split('\n');
                 res.json(contentList.filter(name => name).map(id => ({
                     id,
                     path: id.match(/\.[\w]/g) ? `/blob/master/${id}` : `/tree/master/${id}`,
@@ -117,14 +119,14 @@ app.route('/api/repos/:repositoryId')
             }
         );
     })
-    .delete((req, res) => {
+    .delete((req: Request, res: Response) => {
         const {repositoryId} = req.params;
         const command = os.platform() === 'win32' ? 'rmdir /Q /S' : 'rm -rf';
 
         exec(
             `${command} ${repositoryId}`,
             {cwd: `${absoluteReposPath}`},
-            err => {
+            (err: ExecException) => {
                 if (err) {
                     res.status(500).json({message: err});
                     return;
@@ -133,14 +135,14 @@ app.route('/api/repos/:repositoryId')
             }
         );
     })
-    .post(bodyParser.json(), (req, res) => {
+    .post(bodyParser.json(), (req: Request, res: Response) => {
         const {repositoryId} = req.params;
         const {url} = req.body;
 
         exec(
             `git clone ${url} ${repositoryId}`,
             {cwd: `${absoluteReposPath}`},
-            err => {
+            (err: ExecException) => {
                 if (err) {
                     if (
                         err.message.indexOf(

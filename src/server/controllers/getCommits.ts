@@ -23,4 +23,4 @@ const getCommits = (commitHash: string, repositoryPath: string) => {
         );
     })
 };
-module.exports = {getCommits};
+export {getCommits};
