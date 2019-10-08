@@ -1,14 +1,15 @@
-const {exec} = require('child_process');
+import * as child from 'child_process'
+import {ExecException} from 'child_process'
 
 const getCommits = (commitHash: string, repositoryPath: string) => {
     return new Promise((resolve: (commits: Array<string>) => void, reject: (error: object) => void) => {
-        exec(
+        child.exec(
             'git --no-pager log ' +
             commitHash +
             ' --pretty=format:"{@commitHash@: @"%H"@,@message@: @"%s"@,@date@: @"%cd"@}"',
             {cwd: repositoryPath},
-            (err: string, logData: string) => {
-                if (err) {
+            (error: ExecException | null, logData: string) => {
+                if (error) {
                     reject({error: 'Error'});
                     return;
                 }
