@@ -9,6 +9,9 @@ module.exports = [{
         filename: "index_bundle.js"
     },
     name: 'ui',
+    resolve: {
+        extensions: ['.js', '.jsx', '.tsx', '.ts']
+    },
     devServer: {
         contentBase: path.join(__dirname, '/build'),
         port: 8080,
@@ -28,6 +31,10 @@ module.exports = [{
     },
     module: {
         rules: [
+            {
+                test: /(\.tsx?)$/,
+                loader: 'awesome-typescript-loader'
+            },
             {
                 test: /\.js$/,
                 exclude: /node_modules/,
