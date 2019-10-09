@@ -1,5 +1,5 @@
-import Types from "../Types/Types";
-
+import Types from "../types/Types";
+//todo: use combineReducers
 const reducer = (state = {loading: false, data: []}, action) => {
     switch (action.type) {
         case Types.FETCH_DATA:
