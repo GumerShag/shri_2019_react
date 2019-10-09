@@ -13,3 +13,4 @@ export interface setFilesListToTableAction {
     type: typeof SET_FILES,
     files: Array<object>
 }
+export type ActionType = updateRoutesAction | setContentToViewerAction | setFilesListToTableAction

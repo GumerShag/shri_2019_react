@@ -5,7 +5,7 @@ import {Provider} from 'react-redux';
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
 
 import {applyMiddleware, createStore} from "redux";
-import reducer from "./reducers/reducers";
+import reducer from "./Reducers/reducers";
 import thunk from "redux-thunk";
 import NotFound from "./components/NotFound/NotFound";
 
