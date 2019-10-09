@@ -1,4 +1,11 @@
-import Types from '../Types/Types'
+import {
+    SET_CONTENT,
+    SET_FILES,
+    setContentToViewerAction,
+    setFilesListToTableAction,
+    UPDATE_ROUTES,
+    updateRoutesAction
+} from '../Types/Types'
 import RepoAPI from '../api/RepoAPI';
 import {ThunkAction} from 'redux-thunk';
 import {Action} from "redux";
@@ -30,18 +37,18 @@ const fetchDataFromFile = (path: string): ThunkAction<void, null, null, Action<s
     });
 };
 
-const setFilesListToTable = (files: Array<object>) => ({
-    type: Types.SET_FILES,
+const setFilesListToTable = (files: Array<object>): setFilesListToTableAction => ({
+    type: SET_FILES,
     files
 });
 
-const setContentToViewer = (content: Array<string>) => ({
-    type: Types.SET_CONTENT,
+const setContentToViewer = (content: Array<string>): setContentToViewerAction => ({
+    type: SET_CONTENT,
     content
 });
 
-const updateRoutes = (routes: Array<string>) => ({
-   type: Types.UPDATE_ROUTES,
+const updateRoutes = (routes: Array<string>): updateRoutesAction => ({
+   type: UPDATE_ROUTES,
    routes
 });
 
