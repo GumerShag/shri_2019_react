@@ -1,5 +1,5 @@
 class RepoAPI {
-    static getFilesFromRepository(repositoryId) {
+    static getFilesFromRepository(repositoryId: string){
         return fetch(`http://localhost:3000/api/repos/${repositoryId}`)
             .then(response => {
                 return response.json();
@@ -9,7 +9,7 @@ class RepoAPI {
             });
     }
 
-    static getDataFromFile(path) {
+    static getDataFromFile(path: string) {
         return fetch(`http://localhost:3000/api/repos${path}`)
             .then(response => {
                 return response.text();
@@ -19,7 +19,7 @@ class RepoAPI {
             });
     }
 
-    static getFilesFromDirectory(path) {
+    static getFilesFromDirectory(path: string) {
         return fetch(`http://localhost:3000/api/repos${path}`)
             .then(response => {
                 return response.json();
