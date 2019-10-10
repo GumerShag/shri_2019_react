@@ -14,40 +14,12 @@ class App extends Component {
 
     componentDidMount() {
         const {dispatch, match} = this.props;
-        const uriArr = match.url.split('/');
-
-        dispatch(updateRoutes(getRoutes(uriArr)));
-        if (match.url.includes('tree')) {
-            dispatch(fetchFilesFromDirectory(match.url));
-            return;
-        }
-        if (match.url.includes('blob')) {
-            dispatch(fetchDataFromFile(match.url));
-            return;
-        }
-        if (match.params.repositoryId) {
-            dispatch(fetchFilesFromRepository(match.params));
-        }
+        updateStateByDispatch(dispatch, match);
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
         if (this.props.match !== prevProps.match) {
             const {dispatch, match } = this.props;
-            const uriArr = match.url.split('/');
-
-            dispatch(updateRoutes(getRoutes(uriArr)));
-
-            if (match.url.includes('tree')) {
-                dispatch(fetchFilesFromDirectory(match.url));
-                return;
-            }
-            if (match.url.includes('blob')) {
-                dispatch(fetchDataFromFile(match.url));
-                return;
-            }
-            if (match.params.repositoryId) {
-                dispatch(fetchFilesFromRepository(match.params));
-            }
-
+            updateStateByDispatch(dispatch, match);
         }
     }
 
@@ -61,6 +33,23 @@ class App extends Component {
                 </div>
             </>
         );
+    }
+}
+const updateStateByDispatch = (dispatch, match) => {
+    const uriArr = match.url.split('/');
+
+    dispatch(updateRoutes(getRoutes(uriArr)));
+
+    if (match.url.includes('tree')) {
+        dispatch(fetchFilesFromDirectory(match.url));
+        return;
+    }
+    if (match.url.includes('blob')) {
+        dispatch(fetchDataFromFile(match.url));
+        return;
+    }
+    if (match.params.repositoryId) {
+        dispatch(fetchFilesFromRepository(match.params));
     }
 }
 
