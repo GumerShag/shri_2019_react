@@ -3,10 +3,13 @@ import uuid from 'uuid';
 import {Link} from 'react-router-dom'
 import {getClassName} from '../../helpers/ClassNaming'
 import './TableListItems.scss'
+import {File} from "../../Types/Types";
 
 const cnTableListItems = getClassName('table-list-items');
 
-const TableListItems = ({files = [], currentUrl}) => {
+const TableListItems = (props: any) => {
+    const files: Array<File> = props.files;
+    const currentUrl: string = props.currentUrl;
     return (
         <>
             {files.map((file) => (

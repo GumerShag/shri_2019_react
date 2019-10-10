@@ -1,11 +1,14 @@
 import React, {Component} from 'react';
 import TableContainer from "../TableContainer/TableContainer";
+import {CurrentViewEnum, State} from "../../Types/Types";
 import ContentViewerContainer from "../ContentViewerContainer/ContentViewerContainer";
 import {connect} from "react-redux";
 
-
-class PanelContent extends Component {
-    constructor(props) {
+interface PanelContentProps {
+    currentView: CurrentViewEnum
+}
+class PanelContent extends Component<PanelContentProps> {
+    constructor(props: PanelContentProps) {
         super(props);
     }
 
@@ -18,7 +21,7 @@ class PanelContent extends Component {
     }
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: State) => ({
     currentView: state.currentView
 });
 

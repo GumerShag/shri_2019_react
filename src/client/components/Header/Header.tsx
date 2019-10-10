@@ -1,9 +1,12 @@
 import React from 'react';
+import {getClassName} from "../../helpers/ClassNaming";
+
+const cnHeader = getClassName('header');
 
 export const Header = () => {
     return (
-        <header className="header">
-            <span className="logo"></span>
+        <header className={cnHeader()}>
+            <span className="logo"/>
             <nav className="navigation-bar">
                 <a className="navigation-bar__tab navigation-bar__tab_selected navigation-bar__tab_size-m">
                     <span className="drop-down-menu">

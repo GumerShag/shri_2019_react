@@ -4,11 +4,14 @@ import uuid from 'uuid';
 import './ContentViewer.scss';
 import path from 'path';
 
+
 const cnContentViewer = getClassName('content-viewer');
 
-const ContentViewer = ({content, urlProps}) => {
+const ContentViewer = (props: any) => {
     //fixme: get filename from server response
-    const fileName = path.basename(urlProps.location.pathname);
+    const fileName: string = path.basename(props.urlProps.location.pathname);
+    const content: Array<string> = props.content;
+
     return (
         <div className={cnContentViewer()}>
             <div className={cnContentViewer('header')}>

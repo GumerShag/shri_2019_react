@@ -1,13 +1,17 @@
 import React, {Component} from 'react';
 import uuid from 'uuid';
 import {connect} from "react-redux";
+import {Route, State} from "../../Types/Types";
 import {Link} from "react-router-dom";
 import './CrumbsBar.scss'
 import {getClassName} from "../../helpers/ClassNaming";
 
 const cnCrumbsBar = getClassName('crumbs-bar');
+interface CrumbsBarProps {
+    routes: Array<Route>
+}
 
-class CrumbsBar extends Component {
+class CrumbsBar extends Component<CrumbsBarProps> {
     render() {
         return (
             <div className={cnCrumbsBar()}>
@@ -22,7 +26,7 @@ class CrumbsBar extends Component {
     }
 }
 
-const mapStateToProps = (state, urlProps) => ({
+const mapStateToProps = (state: State) => ({
     routes: [...state.routes]
 });
 
