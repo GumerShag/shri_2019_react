@@ -49,7 +49,7 @@ const updateStateByDispatch = (dispatch, match) => {
         return;
     }
     if (match.params.repositoryId) {
-        dispatch(fetchFilesFromRepository(match.params));
+        dispatch(fetchFilesFromRepository(match.params.repositoryId));
     }
 }
 
