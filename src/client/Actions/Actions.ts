@@ -1,4 +1,5 @@
 import {
+    Route,
     SET_CONTENT,
     SET_FILES,
     setContentToViewerAction,
@@ -47,7 +48,7 @@ const setContentToViewer = (content: Array<string>): setContentToViewerAction =>
     content
 });
 
-const updateRoutes = (routes: Array<string>): updateRoutesAction => ({
+const updateRoutes = (routes: Array<Route>): updateRoutesAction => ({
    type: UPDATE_ROUTES,
    routes
 });

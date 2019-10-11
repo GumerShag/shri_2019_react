@@ -27,7 +27,7 @@ export type CurrentViewEnum = 'table';
 export const UPDATE_ROUTES = 'UPDATE_ROUTES';
 export interface updateRoutesAction {
     type: typeof UPDATE_ROUTES,
-    routes: Array<string>
+    routes: Array<Route>
 }
 export const SET_CONTENT = 'SET_CONTENT';
 export interface setContentToViewerAction {

@@ -6,9 +6,16 @@ import {Main} from './components/Main/Main'
 import {fetchDataFromFile, fetchFilesFromDirectory, fetchFilesFromRepository, updateRoutes} from "./Actions/Actions";
 import {connect} from 'react-redux';
 import {withRouter} from 'react-router-dom';
+import {Action, AnyAction} from "redux";
+import {Route, State} from "./Types/Types";
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
 
-class App extends Component {
-    constructor(props) {
+interface AppProps {
+    dispatch: ThunkDispatch<void, null, Action>;
+    match: object
+}
+class App extends Component<AppProps> {
+    constructor(props: AppProps) {
         super(props)
     }
 
@@ -16,7 +23,7 @@ class App extends Component {
         const {dispatch, match} = this.props;
         updateStateByDispatch(dispatch, match);
     }
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate(prevProps: AppProps, prevState: State) {
         if (this.props.match !== prevProps.match) {
             const {dispatch, match } = this.props;
             updateStateByDispatch(dispatch, match);
@@ -35,7 +42,8 @@ class App extends Component {
         );
     }
 }
-const updateStateByDispatch = (dispatch, match) => {
+//fixme: any to MATCH type from react router
+const updateStateByDispatch = (dispatch: (action: ThunkAction<void, null, null, Action> | AnyAction) => void, match: any) => {
     const uriArr = match.url.split('/');
 
     dispatch(updateRoutes(getRoutes(uriArr)));
@@ -51,16 +59,16 @@ const updateStateByDispatch = (dispatch, match) => {
     if (match.params.repositoryId) {
         dispatch(fetchFilesFromRepository(match.params.repositoryId));
     }
-}
+};
 
-const mapStateToProps = (state, urlProps) => ({
+const mapStateToProps = (state: State, urlProps: any) => ({
     state,
     urlProps
 });
 
-const getRoutes = uriArr => {
-    const routes = [];
-    uriArr.reduce((path, currentPath, index) => {
+const getRoutes = (uriArr: Array<string>): Array<Route> => {
+    const routes: Array<Route> = [];
+    uriArr.reduce((path: string, currentPath: string, index: number) => {
         let full = `${path}/${currentPath}`;
         if (index !== 2 && index !== 3) {
             routes.push({
